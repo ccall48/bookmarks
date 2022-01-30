@@ -16,9 +16,9 @@ app = FastAPI(title = 'Bookmarks API')
 async def startup():
     # create db table/s
     async with engine.begin() as conn:
-        if 'bookmarks' not in Base.metadata.tables.keys():
-            await conn.run_sync(Base.metadata.drop_all)
-            await conn.run_sync(Base.metadata.create_all)
+        #if 'bookmarks' not in Base.metadata.tables.keys():
+        #await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
 
 ##########
@@ -52,7 +52,11 @@ async def get_a_bookmark(data: BookmarkID):
     async with async_session() as session:
         async with session.begin():
             bookmark_dal = BookmarksDAL(session)
-            return await bookmark_dal.get_a_bookmark(data.id)
+            lookup = await bookmark_dal.get_a_bookmark(data.id)
+            if lookup:
+                return await bookmark_dal.get_a_bookmark(data.id)
+            else:
+                return {'error': f'{data.id} does not exist'}
 
 
 ##########
@@ -75,7 +79,7 @@ async def delete_bookmark(data: BookmarkID):
     async with async_session() as session:
         async with session.begin():
             bookmark_dal = BookmarksDAL(session)
-            lookup = await bookmark_dal.get_bookmark(data.id)
+            lookup = await bookmark_dal.get_a_bookmark(data.id)
             """Check bookmark exists before deleting"""
             if lookup:
                 await bookmark_dal.delete_bookmark(data.id)
