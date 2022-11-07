@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 ##########
 # Create inputs
-#
 class CreateInputs(BaseModel):
     author: str
     tags: str
@@ -13,7 +12,6 @@ class CreateInputs(BaseModel):
 
 ##########
 # Put inputs
-#
 class PutInputs(BaseModel):
     id: str
     author: Optional[str] = None
@@ -23,6 +21,5 @@ class PutInputs(BaseModel):
 
 ##########
 # Find Bookmark by ID
-#
 class BookmarkID(BaseModel):
     id: str

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-#from pydantic import BaseModel
+# from pydantic import BaseModel
 from db.config import Base
 from uuid import uuid4
 
@@ -21,6 +21,7 @@ class Bookmark(Base):
     author = Column(String, nullable=False)
     tags = Column(String, nullable=False)
     url = Column(String, nullable=False)
+
 
 '''
 class Tag(Base):

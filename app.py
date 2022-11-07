@@ -9,22 +9,21 @@ from db.models.bookmarks import Bookmark
 from db.models.inputs import CreateInputs, PutInputs, BookmarkID
 
 
-app = FastAPI(title = 'Bookmarks API')
+app = FastAPI(title='Bookmarks API')
 
 
 @app.on_event('startup')
 async def startup():
     # create db table/s
     async with engine.begin() as conn:
-        #if 'bookmarks' not in Base.metadata.tables.keys():
-        #await conn.run_sync(Base.metadata.drop_all)
+        # if 'bookmarks' not in Base.metadata.tables.keys():
+        # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
 
 ##########
 # Create a bookmark
-#
-@app.post('/bookmarks', status_code = status.HTTP_201_CREATED)
+@app.post('/bookmarks', status_code=status.HTTP_201_CREATED)
 async def create_bookmark(data: CreateInputs):
     async with async_session() as session:
         async with session.begin():
@@ -35,8 +34,7 @@ async def create_bookmark(data: CreateInputs):
 
 ##########
 # Return all bookmarks
-#
-@app.get('/bookmarks', status_code = status.HTTP_200_OK)
+@app.get('/bookmarks', status_code=status.HTTP_200_OK)
 async def get_all_bookmarks() -> List[Bookmark]:
     async with async_session() as session:
         async with session.begin():
@@ -46,8 +44,7 @@ async def get_all_bookmarks() -> List[Bookmark]:
 
 ##########
 # Return a bookmark by id
-#
-@app.get('/bookmark', status_code = status.HTTP_200_OK )
+@app.get('/bookmark', status_code=status.HTTP_200_OK)
 async def get_a_bookmark(data: BookmarkID):
     async with async_session() as session:
         async with session.begin():
@@ -61,8 +58,7 @@ async def get_a_bookmark(data: BookmarkID):
 
 ##########
 # Update a bookmark by id
-#
-@app.put('/bookmarks', status_code = status.HTTP_200_OK)
+@app.put('/bookmarks', status_code=status.HTTP_200_OK)
 async def update_bookmark(data: PutInputs):
     async with async_session() as session:
         async with session.begin():
@@ -73,7 +69,6 @@ async def update_bookmark(data: PutInputs):
 
 ##########
 # Delete a bookmark by id
-#
 @app.delete('/bookmarks')
 async def delete_bookmark(data: BookmarkID):
     async with async_session() as session:
